@@ -8,7 +8,7 @@ $('#submitBtn').on('click', function (e) {
     let data = {
         name: name,
         phoneNumber: phoneNumber,
-        address: address,
+        orderAddress: address,
         note: note
     }
     console.log(data);
@@ -16,17 +16,19 @@ $('#submitBtn').on('click', function (e) {
     var instance = axios.create({
         baseURL: 'http://localhost:3000/requestReceiver',
         timeout: 15000,
-        data: data,
     });
 
-    instance.post('')
+    instance.post('',data)
         .then(function (res) {
-            if(res.data !== null){
+            if(res.status === 201){
                 // Do something
+                $('.alert-success').css('display','inline');
             } else {
                 //Do somgthing
+                $('.alert-danger').css('display','block');
             }
-            $('.alert-success').css('display','inline');
+
+            console.log(res);
         }).catch(function(err) {
             console.log(err);
             $('.alert-danger').css('display','block');

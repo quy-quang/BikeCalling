@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
@@ -17,35 +17,34 @@
 </head>
 
 <body>
+    <script id="template" type="text/x-handlebars-template">
+        {{#each this}}
+            <tbody>
+                <th scope="row">{{index}}</th>
+                <td>{{name}}</td>
+                <td>{{address}}</td>
+                <td>{{note}}</td>
+                <td><a name="" id="" class="btn btn-info" href="#" role="button">Chi tiết</a></td>
+            </tbody>    
+        {{/each}}
+    </script>
     <div class="container-fluid">
-        <h1 style="text-align: center">TỔNG ĐÀI GỌI XE</h1>
-        <div class="alert alert-success" style="display: none">
-            <strong>Success!</strong> Đã gửi yêu cầu thành công.
-        </div>
-        <div class="alert alert-danger" style="display: none">
-            <strong>Danger!</strong> Có lỗi xảy ra
-        </div>
-        <form>
-            <div class="form-group">
-                <label for="inputName">Tên Khách Hàng</label>
-                <input type="text" class="form-control" id="inputName" placeholder="Nguyễn Văn A">
-            </div>
-            <div class="form-group">
-                <label for="inputPhoneNumber">Số Điện Thoại</label>
-                <input type="number" class="form-control" id="inputPhoneNumber" placeholder="0168123456">
-            </div>
-            <div class="form-group">
-                <label for="inputAddress">Địa chỉ</label>
-                <input type="text" class="form-control" id="inputAddress" placeholder="145 Nguyễn Văn Cừ, quận 5, Tp Hồ Chí Minh">
-            </div>
-            <div class="form-group">
-                <label for="inputNote">Ghi chú</label>
-                <input type="text" class="form-control" id="inputNote" placeholder="Ghi chú của bạn">
-            </div>
-            <button type="submit" class="btn btn-primary" id="submitBtn">Gửi</button>
-        </form>
-    </div>
+        <h1 style="text-align: center;">Danh Sách Các Yêu Cầu Của Khách Hàng</h1>
+        <table class="table" id="list">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Số thứ tự</th>
+                    <th scope="col">Tên Khách Hàng</th>
+                    <th scope="col">Địa chỉ</th>
+                    <th scope="col">Note</th>
+                    <th scope="col">Thao tác</th>
+                </tr>
+            </thead>
+        </table>
 
+        <!-- <h1>My First Google Map</h1>
+        <div id="map" style="width:100%;height:400px;"></div> -->
+    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -54,7 +53,9 @@
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
         crossorigin="anonymous"></script>
-
+    <!-- GoogleMap API -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkyzsGsAGK174yBa7KG3o5zrJDp_TpPGs&callback=initMap"
+        type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" media="screen" href="./css/style.css" />
     <script src="./js/app.js"></script>
 </body>
