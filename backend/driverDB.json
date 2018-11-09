@@ -1,0 +1,28 @@
+{
+  "driver": [
+    {
+      "driverId": 1,
+      "name": "quangpro",
+      "username": "lfj",
+      "password": "1541742305",
+      "currentLocation":"62 ngu binh",
+      "status": 0
+    },
+    {
+      "driverId": 1,
+      "name": 1,
+      "username": 1,
+      "password": 1541742305,
+      "currentLocation":"",
+      "status": 0
+    },
+    {
+      "driverId": 1,
+      "name": 1,
+      "username": 1,
+      "password": 1541742305,
+      "currentLocation":"",
+      "status": 0
+    }
+  ]
+}
