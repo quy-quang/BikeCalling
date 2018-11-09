@@ -20,12 +20,13 @@
     <script id="template" type="text/x-handlebars-template">
         {{#each this}}
             <tbody>
-                <th scope="row">{{index}}</th>
+                <th scope="row">{{clientId}}</th>
                 <td>{{name}}</td>
-                <td>{{address}}</td>
+                <td>{{orderAddress}}</td>
+                <td>{{phoneNumber}}</td>
                 <td>{{note}}</td>
                 <td>
-                    <button type="button" class="btn btn-info btnDetail" data-toggle="modal" data-target="#myModal" name="{{address}}">
+                    <button type="button" class="btn btn-info btnDetail" data-toggle="modal" data-target="#myModal" orderAddress="{{orderAddress}}" clientId ="{{clientId}}">
                         Chi tiết
                     </button>
                 </td>
@@ -37,9 +38,10 @@
         <table class="table" id="list">
             <thead class="thead-light">
                 <tr>
-                    <th scope="col">Số thứ tự</th>
+                    <th scope="col">ID</th>
                     <th scope="col">Tên Khách Hàng</th>
                     <th scope="col">Địa chỉ</th>
+                    <th scope="col">Số điện thoại</th>
                     <th scope="col">Note</th>
                     <th scope="col">Thao tác</th>
                 </tr>

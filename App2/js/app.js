@@ -16,6 +16,7 @@ dataTest = [
 ts = 0;
 let currentMarkerLocation;
 let currentLocationName = '';
+let currentId = '';
 
 window.onload = function () {
     loadCategories();
@@ -24,36 +25,46 @@ window.onload = function () {
 var loadCategories = function () {
 
     var instance = axios.create({
-        baseURL: 'http://localhost:3000/requestReceiver',
+        baseURL: 'http://localhost:3000/locationIdentifier',
         timeout: 15000
     });
 
-    // instance.get('lp?ts=' + ts) 
-    //     .then(function (res) {
-    //         if (res.status === 200) {
-    //             ts = res.data.return_ts;
-    //             var source = document.getElementById('template').innerHTML;
-    //             var template = Handlebars.compile(source);
-    //             var html = template(res.data.categories);
-    //             document.getElementById('list').innerHTML += html;
-    //         }
-    //     }).catch(function (err) {
-    //         console.log(err);
-    //     }).then(function () {
-    //         loadCategories();
-    //     })
-
-    var source = document.getElementById('template').innerHTML;
-    var template = Handlebars.compile(source);
-    var html = template(dataTest);
-    document.getElementById('list').innerHTML += html;
+    instance.get('?ts=' + ts)
+        .then(function (res) {
+            if (res.status === 200) {
+                console.log(res);
+                ts = res.data.return_ts;
+                var source = document.getElementById('template').innerHTML;
+                var template = Handlebars.compile(source);
+                var html = template(res.data.client);
+                document.getElementById('list').innerHTML =
+                    '<thead class="thead-light">' +
+                    '<tr>' +
+                    '<th scope="col">ID</th>' +
+                    '<th scope="col">Tên Khách Hàng</th>' +
+                    '<th scope="col">Địa chỉ</th>' +
+                    '<th scope="col">Số điện thoại</th>' +
+                    '<th scope="col">Note</th>' +
+                    '<th scope="col">Thao tác</th>' +
+                    '</tr>' +
+                    '</thead>';
+                document.getElementById('list').innerHTML += html;
+            }
+        }).catch(function (err) {
+            console.log(err);
+        })
+    // .then(function () {
+    //     loadCategories();
+    // })
 }
 
 
 $('#myModal').on('show.bs.modal', function (e) {
 
     //get data-id attribute of the clicked element
-    var address = $(e.relatedTarget).attr('name');
+    var address = $(e.relatedTarget).attr('orderAddress');
+    var Id = $(e.relatedTarget).attr('clientId');
+    currentId = Id;
     console.log(address);
     getGeoCoding(address)
         .then(location => {
@@ -125,17 +136,22 @@ function initMap(location) {
 $('.save').on("click", function () {
     console.log(currentMarkerLocation);
     console.log(currentLocationName);
+    console.log(currentId);
 
     var instance = axios.create({
         baseURL: 'http://localhost:3000/locationIdentifier',
         timeout: 15000,
     });
 
-    instance.post('', {newAddress: currentLocationName})
+    instance.post('',
+        {
+            clientId: currentId,
+            newAddress: currentLocationName
+        })
         .then(function (res) {
-            if (res.status === 201) {
+            if (res.status === 200) {
                 // Do something
-                $('.alert-success').css('display', 'inline');
+                alert('OK')
             } else {
                 //Do somgthing
                 $('.alert-danger').css('display', 'block');
