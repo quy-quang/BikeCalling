@@ -12,6 +12,7 @@ var low = require('lowdb'),
 var adapter = new fileSync('./clientDB.json');
 var clientDB = low(adapter);
 var router = express.Router();
+var clientId = 0;
 
 router.post('/', (req, res) => {
 	var client = req.body;
@@ -19,6 +20,7 @@ router.post('/', (req, res) => {
 	client["timeRequest"]= time_request;
 	client["status"]= LOCATING;
 	client["newAddress"] = "";
+	client["clientId"] = ++clientId;
 	clientDB.get('client').push(client).write();
 
 	res.statusCode = 201;
