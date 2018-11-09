@@ -126,4 +126,24 @@ $('.save').on("click", function () {
     console.log(currentMarkerLocation);
     console.log(currentLocationName);
 
+    var instance = axios.create({
+        baseURL: 'http://localhost:3000/locationIdentifier',
+        timeout: 15000,
+    });
+
+    instance.post('', {newAddress: currentLocationName})
+        .then(function (res) {
+            if (res.status === 201) {
+                // Do something
+                $('.alert-success').css('display', 'inline');
+            } else {
+                //Do somgthing
+                $('.alert-danger').css('display', 'block');
+            }
+
+            console.log(res);
+        }).catch(function (err) {
+            console.log(err);
+            $('.alert-danger').css('display', 'block');
+        })
 });
