@@ -7,6 +7,8 @@ var app = express();
 
 var clientCtrl = require('./clientController')
 var requestReceiverCtrl = require('./requestReceiver/requestReceiverController')
+var locationIdentifierCtrl = require('./locationIdentifier/locationIdentifierController')
+
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -14,6 +16,8 @@ app.use(cors());
 
 app.use('/clientController', clientCtrl);
 app.use('/requestReceiver',requestReceiverCtrl);
+app.use('/locationIdentifier',locationIdentifierCtrl);
+
 
 var port = 3000;
 app.listen(port, () => console.log(`App is running on port ${port}`));
