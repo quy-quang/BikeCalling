@@ -19,10 +19,8 @@ const 	WAITING = 0,
 		DONE = 2
 
 router.get('/trip', (req, res) => {
-	var clientId = 0;
-	if (req.query.clientId) {
-		clientId += parseInt(req.query.clientId, 10);
-	}
+	var clientId = req.query.clientId;
+	console.log(clientId);
 	var tripObject = tripDB.get('trip').find({"clientId": clientId}).value();
 	console.log(tripObject["driverId"])
 	var driverObject = driverDB.get('driver').find({"driverId":tripObject["driverId"]}).value();

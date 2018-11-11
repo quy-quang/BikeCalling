@@ -28,87 +28,78 @@ window.onload = function () {
 var loadCategories = function () {
 
     var instance = axios.create({
-        baseURL: 'http://localhost:3000/requestReceiver',
+        baseURL: 'http://localhost:3000/locationIdentifier',
         timeout: 15000
     });
 
-    // instance.get('lp?ts=' + ts) 
-    //     .then(function (res) {
-    //         if (res.status === 200) {
-    //             ts = res.data.return_ts;
-    //             var source = document.getElementById('template').innerHTML;
-    //             var template = Handlebars.compile(source);
-    //             var html = template(res.data.categories);
-    //             document.getElementById('list').innerHTML += html;
-    //         }
-    //     }).catch(function (err) {
-    //         console.log(err);
-    //     }).then(function () {
-    //         loadCategories();
-    //     })
+    instance.get('?ts=' + ts)
+        .then(function (res) {
+            if (res.status === 200) {
+                console.log(res);
+                ts = res.data.return_ts;
+                var source = document.getElementById('template').innerHTML;
+                var template = Handlebars.compile(source);
+                var currentData = res.data.client;
+                for (var i = 0; i < currentData.length; i++) {
+                    if (currentData[i].status == 0 || currentData[i].status == 1) {
+                        currentData[i].isTrip = false;
+                    } else {
+                        currentData[i].isTrip = true;
+                    }
+                    if (currentData[i].status == 0) currentData[i].status = "Đang định vị";
+                    if (currentData[i].status == 1) currentData[i].status = "Đã định vị";
+                    if (currentData[i].status == 2) currentData[i].status = "Đã sẵn sàng";
+                    if (currentData[i].status == 3) currentData[i].status = "Đang chạy";
+                    if (currentData[i].status == 4) currentData[i].status = "Hoàn thành";
+                }
+                console.log(currentData);
 
-    var source = document.getElementById('template').innerHTML;
-    var template = Handlebars.compile(source);
-    var html = template(dataTest);
-    document.getElementById('list').innerHTML += html;
+                var html = template(res.data.client);
+                document.getElementById('list').innerHTML =
+                    '<thead class="thead-light">' +
+                    '<tr>' +
+                    '<th scope="col">ID</th>' +
+                    '<th scope="col">Tên Khách Hàng</th>' +
+                    '<th scope="col">Địa chỉ</th>' +
+                    '<th scope="col">Trạng thái</th>' +
+                    '<th scope="col">Note</th>' +
+                    '<th scope="col">Thao tác</th>' +
+                    '</tr>' +
+                    '</thead>';
+                document.getElementById('list').innerHTML += html;
+            }
+        }).catch(function (err) {
+            console.log(err);
+        })
+    // .then(function () {
+    //     loadCategories();
+    // })
 }
 
 
 $('#myModal').on('show.bs.modal', function (e) {
 
     //get data-id attribute of the clicked element
-    var index = $(e.relatedTarget).attr('name');
+    var clientId = $(e.relatedTarget).attr('clientId');
     var instance = axios.create({
-        baseURL: 'http://localhost:3000/locationIdentifier',
+        baseURL: 'http://localhost:3000/requestManagment',
         timeout: 15000
     })
-    instance.post('', {
-        id: index
+    instance.get('/trip', {
+        params: {
+            clientId: clientId
+        }
     }).then(res => {
+        console.log(res);
         if (res.status = 201) {
+            var  driverAddress = res.data.mapAndDriverInfo.driverAddress;
+            var customerAddress= res.data.mapAndDriverInfo.clientAddress;
+            initMap(driverAddress, customerAddress);
         }
     }).catch(err => {
         console.log(err)
     })
-    console.log(index);
-    var trip = {
-        customerAddress: "225 Nguyễn Văn Cừ, quận 5, Tp Hồ Chí Minh",
-        driverAddress: "145C Bình Thới, quận 11, Tp Hồ Chí Minh",
-        driverName: "Nguyễn Phước Quý Quang"
-    }
-    initMap(trip.driverAddress, trip.customerAddress);
-    // getDirection(trip.driverAddress, trip.customerAddress)
-    //     .then(location => {
-    //         initMap(location);
-    //     })
-    //     .catch(err => {
-    //         console.log(err);
-    //     });
-
-
-    //console.log(latLng);
-    //populate the textbox
-    //   $(e.currentTarget).find('input[name="bookId"]').val(bookId);
 });
-
-// function getDirection(origin, destination) {
-//     return new Promise((resolve, reject) => {
-//         axios.get('https://maps.googleapis.com/maps/api/directions/json', {
-//             params: {
-//                 origin: origin,
-//                 destination: destination,
-//                 key: 'AIzaSyDkyzsGsAGK174yBa7KG3o5zrJDp_TpPGs'
-//             }
-//         }).then(function (res) {
-//             console.log(res);
-//             if (res.status == 200) {
-//                 console.log(res);
-//                 return res.data.results[0].geometry.location;
-//             }
-//         }).then(value => resolve(value))
-//             .catch(err => reject(err));
-//     })
-// }
 
 function initMap(origin, destination) {
     var directionsService = new google.maps.DirectionsService;
@@ -117,13 +108,6 @@ function initMap(origin, destination) {
         "lat": 33.3632256,
         "lng": -117.0874871
     }
-    // console.log(origin);
-    // if (origin === undefined){
-    //     origin ='';
-    // }
-    // if (destination === undefined){
-    //     destination ='';
-    // }
     var map = new google.maps.Map(
         document.getElementById('map'),
         {
@@ -144,56 +128,30 @@ function initMap(origin, destination) {
             window.alert('Directions request failed due to ' + status);
         }
     });
-    // google.maps.event.addListener(marker, "dragend", function () {
-    //     var lat = marker.getPosition().lat();
-    //     var lng = marker.getPosition().lng();
-    //     currentMarkerLocation = {
-    //         lat: lat,
-    //         lng: lng
-    //     }
-    //     var geocoder = new google.maps.Geocoder;
-    //     var infowindow = new google.maps.InfoWindow;
-    //     geocoder.geocode({ 'location': currentMarkerLocation }, function (results, status) {
-    //         if (status === 'OK') {
-    //             if (results[0]) {
-    //                 map.setZoom(15);
-    //                 infowindow.setContent(results[0].formatted_address);
-    //                 currentLocationName = results[0].formatted_address;
-    //                 infowindow.open(map, marker);
-    //             } else {
-    //                 window.alert('No results found');
-    //                 currentLocationName = '';
-    //             }
-    //         } else {
-    //             window.alert('Geocoder failed due to: ' + status);
-    //             currentLocationName = '';
-    //         }
-    //     });
-    // });
 }
 
-$('.save').on("click", function () {
-    console.log(currentMarkerLocation);
-    console.log(currentLocationName);
+// $('.save').on("click", function () {
+//     console.log(currentMarkerLocation);
+//     console.log(currentLocationName);
 
-    var instance = axios.create({
-        baseURL: 'http://localhost:3000/locationIdentifier',
-        timeout: 15000,
-    });
+//     var instance = axios.create({
+//         baseURL: 'http://localhost:3000/locationIdentifier',
+//         timeout: 15000,
+//     });
 
-    instance.post('', { newAddress: currentLocationName })
-        .then(function (res) {
-            if (res.status === 201) {
-                // Do something
-                $('.alert-success').css('display', 'inline');
-            } else {
-                //Do somgthing
-                $('.alert-danger').css('display', 'block');
-            }
+//     instance.post('', { newAddress: currentLocationName })
+//         .then(function (res) {
+//             if (res.status === 201) {
+//                 // Do something
+//                 $('.alert-success').css('display', 'inline');
+//             } else {
+//                 //Do somgthing
+//                 $('.alert-danger').css('display', 'block');
+//             }
 
-            console.log(res);
-        }).catch(function (err) {
-            console.log(err);
-            $('.alert-danger').css('display', 'block');
-        })
-});
+//             console.log(res);
+//         }).catch(function (err) {
+//             console.log(err);
+//             $('.alert-danger').css('display', 'block');
+//         })
+// });
