@@ -17,7 +17,8 @@ var router = express.Router();
 router.post('/', (req, res) => {
 	var client = req.body;
 	var time_request = moment().unix();
-	client["timeRequest"] = time_request;
+
+	client["iat"] = time_request;
 	client["status"] = LOCATING;
 	client["newAddress"] = "";
 	client["clientId"] = shortid.generate();

@@ -1,5 +1,6 @@
 var low = require('lowdb'),
 	fileSync = require('lowdb/adapters/FileSync'),
+    moment = require('moment'),
 	express = require('express');
 
 var adapter = new fileSync('./clientDB.json');
@@ -15,6 +16,40 @@ router.get('/', (req, res) => {
 		client
 	})
 })
+
+router.get('/lp', (req, res) => {
+    var ts = 0;
+    if (req.query.ts) {
+        ts = +req.query.ts;
+    }
+
+    var loop = 0;
+    var fn = () => {
+    	console.log(db.get('client').value())
+        var client = db.get('client').filter(c => c.iat >= ts);
+        var return_ts = moment().unix();
+        if (client.size() > 0) {
+        	console.log('co gia tri cua client'+client.size())
+            res.json({
+                return_ts,
+                client
+            });
+        } else {
+            loop++;
+            console.log(`loop: ${loop}`);
+            if (loop < 4) {
+                setTimeout(fn, 2500);
+            } else {
+                res.statusCode = 204;
+                res.end('no data');
+            }
+        }
+    }
+
+    fn();
+})
+
+
 
 router.post('/', (req, res) => {
 	// {
