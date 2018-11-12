@@ -38,4 +38,38 @@ router.get('/trip', (req, res) => {
 	})
 })
 
+router.get('/lp', (req, res) => {
+    var ts = 0;
+    if (req.query.ts) {
+        ts = +req.query.ts;
+    }
+
+    var loop = 0;
+    var fn = () => {
+        var adapter = new fileSync('./tripDB.json');
+        var db = low(adapter);
+    	// console.log(db.get('trip').value())
+        var trip = db.get('trip').filter(c => c.iat >= ts);
+        var return_ts = moment().unix();
+        if (trip.size() > 0) {
+        	// console.log('co gia tri cua client'+trip.size())
+            res.json({
+                return_ts,
+                trip
+            });
+        } else {
+            loop++;
+            console.log(`loop: ${loop}`);
+            if (loop < 4) {
+                setTimeout(fn, 2500);
+            } else {
+                res.statusCode = 204;
+                res.end('no data');
+            }
+        }
+    }
+
+    fn();
+})
+
 module.exports = router;

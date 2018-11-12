@@ -36,11 +36,11 @@ router.get('/lp', (req, res) => {
     var fn = () => {
         var adapter = new fileSync('./clientDB.json');
         var db = low(adapter);
-    	console.log(db.get('client').value())
+    	// console.log(db.get('client').value())
         var client = db.get('client').filter(c => c.iat >= ts);
         var return_ts = moment().unix();
         if (client.size() > 0) {
-        	console.log('co gia tri cua client'+client.size())
+        	// console.log('co gia tri cua client'+client.size())
             res.json({
                 return_ts,
                 client
