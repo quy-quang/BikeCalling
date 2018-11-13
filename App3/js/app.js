@@ -32,7 +32,7 @@ var loadCategories = function () {
         timeout: 15000
     });
 
-    instance.get('?ts=' + ts)
+    instance.get('lp?ts=' + ts)
         .then(function (res) {
             if (res.status === 200) {
                 console.log(res);
@@ -71,9 +71,9 @@ var loadCategories = function () {
         }).catch(function (err) {
             console.log(err);
         })
-    // .then(function () {
-    //     loadCategories();
-    // })
+        .then(function () {
+            loadCategories();
+        })
 }
 
 
@@ -92,9 +92,12 @@ $('#myModal').on('show.bs.modal', function (e) {
     }).then(res => {
         console.log(res);
         if (res.status = 201) {
-            var  driverAddress = res.data.mapAndDriverInfo.driverAddress;
-            var customerAddress= res.data.mapAndDriverInfo.clientAddress;
+            var driverAddress = res.data.mapAndDriverInfo.driverAddress;
+            var customerAddress = res.data.mapAndDriverInfo.clientAddress;
+            $('.driverName').html(res.data.mapAndDriverInfo.nameOfDriver);
+            $(selector).html(htmlString);
             initMap(driverAddress, customerAddress);
+
         }
     }).catch(err => {
         console.log(err)
@@ -115,6 +118,7 @@ function initMap(origin, destination) {
             center: location
         });
     // currentMarkerLocation = location;
+    map.setZoom(15);
     directionsDisplay.setMap(map);
 
     directionsService.route({
@@ -129,29 +133,3 @@ function initMap(origin, destination) {
         }
     });
 }
-
-// $('.save').on("click", function () {
-//     console.log(currentMarkerLocation);
-//     console.log(currentLocationName);
-
-//     var instance = axios.create({
-//         baseURL: 'http://localhost:3000/locationIdentifier',
-//         timeout: 15000,
-//     });
-
-//     instance.post('', { newAddress: currentLocationName })
-//         .then(function (res) {
-//             if (res.status === 201) {
-//                 // Do something
-//                 $('.alert-success').css('display', 'inline');
-//             } else {
-//                 //Do somgthing
-//                 $('.alert-danger').css('display', 'block');
-//             }
-
-//             console.log(res);
-//         }).catch(function (err) {
-//             console.log(err);
-//             $('.alert-danger').css('display', 'block');
-//         })
-// });
