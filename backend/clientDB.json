@@ -21,26 +21,6 @@
       "clientId": "pOr_jX58H"
     },
     {
-      "name": "1g",
-      "phoneNumber": "0981867457",
-      "orderAddress": "62 ngu binh phuong an cuu thanh pho hue",
-      "note": "don nhanh ca chet",
-      "iat": 1541825966,
-      "status": 0,
-      "newAddress": "",
-      "clientId": "WQ6s6SKOs"
-    },
-    {
-      "name": "123123g",
-      "phoneNumber": "0981867457",
-      "orderAddress": "62 ngu binh phuong an cuu thanh pho hue",
-      "note": "don nhanh ca chet",
-      "iat": 1541826158,
-      "status": 0,
-      "newAddress": "",
-      "clientId": "Q0hvRXUOs"
-    },
-    {
       "name": "John Stone",
       "phoneNumber": "0123456789",
       "orderAddress": "49 Đinh Tiên Hoàng, quận Bình Thạnh, Tp Hồ Chí Minh",
@@ -61,14 +41,14 @@
       "clientId": "EmJj34sRo"
     },
     {
-      "name": "Shadow Fiend",
-      "phoneNumber": "0123456789",
-      "orderAddress": "150 Thành Thái, quận 10, tp Hồ Chí Minh",
-      "note": "abcdef",
-      "iat": 1542080973,
+      "name": "Cao Bá Đông",
+      "phoneNumber": "0123654987",
+      "orderAddress": "15 Lê Đại Hành, quận 11, Tp Hồ Chí Minh",
+      "note": "Không có gì cả",
+      "iat": 1542033420,
       "status": 0,
       "newAddress": "",
-      "clientId": "LbD-XqwfO"
-    }
+      "clientId": "C6BPauJ2W"
+    },
   ]
 }

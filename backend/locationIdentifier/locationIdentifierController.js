@@ -2,10 +2,17 @@ var low = require('lowdb'),
 	fileSync = require('lowdb/adapters/FileSync'),
     moment = require('moment'),
 	express = require('express');
+const shortid = require('shortid');
 
 var adapter = new fileSync('./clientDB.json');
 
 var router = express.Router();
+
+const LOCATING = 0,
+    LOCATED = 1,
+    READY = 2,
+    MOVING = 3,
+    DONE = 4;
 
 router.get('/', (req, res) => {
     var db = low(adapter);
@@ -56,16 +63,16 @@ router.get('/lp', (req, res) => {
 
 
 router.post('/', (req, res) => {
-	// {
-	// 	"clientId":...,
-	// 	"newAddress":...
-	// }
-	var newClient = req.body;
-	var findObject = (db.get('client').find(obj => obj["clientId"] == newClient["clientId"])).update("newAddress",
-		x => newClient["newAddress"]).write();
+    // {
+    //  "clientId":...,
+    //  "newAddress":...
+    // }
+    var newClient = req.body;
+    var findObject = (db.get('client').find(obj => obj["clientId"] == newClient["clientId"])).update("newAddress",
+        x => newClient["newAddress"]).write();
 
-	res.statusCode = 200;
-	res.json({findObject});
+    res.statusCode = 200;
+    res.json({findObject});
 })
 
 module.exports = router;

@@ -5,7 +5,7 @@
       "name": "Nguyễn Phước Quý Quang",
       "username": "quangpro",
       "password": "123456789",
-      "currentLocation":"135b Đường Trần Hưng Đạo, Phường Cầu Ông Lãnh, Quận 1, Hồ Chí Minh",
+      "currentLocation": "135b Đường Trần Hưng Đạo, Phường Cầu Ông Lãnh, Quận 1, Hồ Chí Minh",
       "status": 0
     },
     {
@@ -131,6 +131,44 @@
         "lng": 67
       },
       "access_token": ""
+    },
+    {
+      "user": "lfj",
+      "password": "202cb962ac59075b964b07152d234b70",
+      "name": "quyquang",
+      "status": 0,
+      "driverId": "iveeiUHZ3",
+      "currentLocation": ""
+    },
+    {
+      "user": "lfj",
+      "password": "202cb962ac59075b964b07152d234b70",
+      "name": "quyquang",
+      "status": 0,
+      "driverId": "X6BCItdWt",
+      "currentLocation": ""
+    },
+    {
+      "user": "lfj",
+      "password": "202cb962ac59075b964b07152d234b70",
+      "status": 0,
+      "driverId": "Bl7C9g8VV",
+      "currentLocation": ""
+    },
+    {
+      "username": "lfj",
+      "password": "202cb962ac59075b964b07152d234b70",
+      "status": 0,
+      "driverId": "iRgLxb4dc",
+      "currentLocation": ""
+    },
+    {
+      "name": "quyquang",
+      "username": "lfj",
+      "password": "202cb962ac59075b964b07152d234b70",
+      "status": 0,
+      "driverId": "7vxcHci86",
+      "currentLocation": ""
     }
   ]
 }
