@@ -29,7 +29,7 @@ var loadCategories = function () {
         timeout: 15000
     });
 
-    instance.get('?ts=' + ts)
+    instance.get('/lp?ts=' + ts)
         .then(function (res) {
             if (res.status === 200) {
                 console.log(res);
@@ -53,9 +53,9 @@ var loadCategories = function () {
         }).catch(function (err) {
             console.log(err);
         })
-    // .then(function () {
-    //     loadCategories();
-    // })
+    .then(function () {
+        loadCategories();
+    })
 }
 
 

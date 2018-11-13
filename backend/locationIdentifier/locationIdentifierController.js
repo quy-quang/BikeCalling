@@ -4,11 +4,11 @@ var low = require('lowdb'),
 	express = require('express');
 
 var adapter = new fileSync('./clientDB.json');
-var db = low(adapter);
 
 var router = express.Router();
 
 router.get('/', (req, res) => {
+    var db = low(adapter);
 	var client = db.get('client');
 	// console.log(JSON.stringify(client))
 	res.statusCode = 200;
@@ -18,6 +18,7 @@ router.get('/', (req, res) => {
 })
 
 router.get('/lp', (req, res) => {
+    var db = low(adapter);
     var ts = 0;
     if (req.query.ts) {
         ts = +req.query.ts;
@@ -25,11 +26,14 @@ router.get('/lp', (req, res) => {
 
     var loop = 0;
     var fn = () => {
-    	console.log(db.get('client').value())
+    //	console.log(db.get('client').value())
         var client = db.get('client').filter(c => c.iat >= ts);
+        if(client.size() > 0){
+            client = db.get('client');
+        }
         var return_ts = moment().unix();
         if (client.size() > 0) {
-        	console.log('co gia tri cua client'+client.size())
+        //	console.log('co gia tri cua client'+client.size())
             res.json({
                 return_ts,
                 client
