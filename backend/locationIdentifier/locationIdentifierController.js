@@ -33,14 +33,12 @@ router.get('/lp', (req, res) => {
 
     var loop = 0;
     var fn = () => {
-    //	console.log(db.get('client').value())
         var client = db.get('client').filter(c => c.iat >= ts);
         if(client.size() > 0){
             client = db.get('client');
         }
         var return_ts = moment().unix();
         if (client.size() > 0) {
-        //	console.log('co gia tri cua client'+client.size())
             res.json({
                 return_ts,
                 client
@@ -68,6 +66,7 @@ router.post('/', (req, res) => {
     //  "newAddress":...
     // }
     var newClient = req.body;
+    var db = low(adapter);
     var findObject = (db.get('client').find(obj => obj["clientId"] == newClient["clientId"])).update("newAddress",
         x => newClient["newAddress"]).write();
 

@@ -48,11 +48,9 @@ router.get('/lp', (req, res) => {
     var fn = () => {
         var adapter = new fileSync('./tripDB.json');
         var db = low(adapter);
-    	// console.log(db.get('trip').value())
         var trip = db.get('trip').filter(c => c.iat >= ts);
         var return_ts = moment().unix();
         if (trip.size() > 0) {
-        	// console.log('co gia tri cua client'+trip.size())
             res.json({
                 return_ts,
                 trip
