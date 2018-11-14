@@ -6,6 +6,9 @@ var moment = require('moment');
 const SECRET = 'ABCDEF';
 const AC_LIFETIME = 600; // seconds
 
+var low = require('lowdb'),
+    fileSync = require('lowdb/adapters/FileSync');
+
 exports.generationAccessToken = userEntity => {
     var payload = {
         user: userEntity,
@@ -42,4 +45,28 @@ exports.verifyAccessToken = (req, res, next) => {
             msg: 'NO_TOKEN'
         })
     }
+}
+
+exports.generateRefreshToken = () => {
+    const SIZE = 80;
+    return rndToken.generate(SIZE);
+}
+
+exports.updateRefreshToken = (userId, rfToken) => {
+    var refreshTokenAdapter = new fileSync('./refreshTokenDB.json');
+    var refreshTokenDB = low(refreshTokenAdapter);
+    var refreshTokenObject = refreshTokenDB.get('refreshTokenList').find({"driverId":userId}).value();
+    console.log(refreshTokenDB.get('refreshTokenList').value())
+    if (refreshTokenObject != undefined) {
+        refreshTokenDB.get('refreshTokenList').find({"driverId":userId}).update("refreshToken",
+        x => rfToken).write()
+        console.log('vao refreshToken')
+    }
+        
+    else{
+        var obj  = {"driverId": userId, "refreshToken":rfToken}
+        console.log(obj);
+      refreshTokenDB.get('refreshTokenList').push(obj).write();
+      console.log('ko co ')  
+    } 
 }

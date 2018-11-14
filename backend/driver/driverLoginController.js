@@ -45,10 +45,13 @@ router.post('/login', (req, res) => {
 	var userEntity = driverDB.get('driver').find({"username": loginEntity.username, "password": md5_pwd}).value();
 	if (userEntity != undefined){
 		var acToken = authRepo.generationAccessToken(userEntity);
+		var rfToken = authRepo.generateRefreshToken();
+		authRepo.updateRefreshToken(userEntity.driverId, rfToken)
 		res.json({
 			auth: true,
 			user: userEntity,
-			access_token : acToken
+			access_token : acToken,
+			refresh_token : rfToken
 		})
 	}
 	else{
