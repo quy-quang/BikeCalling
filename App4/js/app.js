@@ -6,6 +6,8 @@ $(function () {
     console.log(refreshToken);
     if (refreshToken == '') {
         $('.login-page').css('display', 'block');
+    } else {
+        $('.home-page').css('display', 'block');
     }
 
     //Event nhấn button đăng nhập. Nếu kết quả trả về là ok thì chuyển qua trang người dùng. Nếu Err thì tiếp tục ở trang đăng nhập
@@ -15,7 +17,7 @@ $(function () {
         let password = $('.password').val();
 
         var instance = axios.create({
-            baseURL: 'http://localhost:3000/????',
+            baseURL: 'http://localhost:3000/driverLogin',
             timeout: 15000
         });
 
@@ -24,20 +26,27 @@ $(function () {
             password: password
         })
             .then(res => {
+                console.log(res);
+                if (res.data.auth == true) {
+                    $('.login-page').css('display', 'none');
+                    $('.home-page').css('display', 'block');
+                    setCookie('accessToken', res.data.access_token, 600);
+                    setCookie('refreshToken', res.data.refresh_token, 10800);
+                    setCookie('driverId', res.data.user.driverId, 10800);
+                    setCookie('driverName', res.data.user.name, 10800);
+                    $('.driverName').html(getCookie('driverName'));
 
+                } else {
+                    alert('Dang nhap that bai');
+                }
             })
             .catch(err => {
-
+                console.log(err);
             })
-        let data = {
-            driverName: 'Cao Ba Dong',
-            driverId: 'ABCXYZ'
-        }
-        $('.driverName').html(data.driverName);
-        $('.login-page').css('display', 'none');
-        $('.home-page').css('display', 'block');
-
     });
+
+    $('.driverName').html(getCookie('driverName'));
+
 
     // Event thay đổi button chuyển đổi trạng thái
     $('.btn-toggle').click(function () {
@@ -45,11 +54,10 @@ $(function () {
         //Lay trạng thai truoc
         if ($(this).find('.active').html() == 'Nghỉ ngơi') {
             // gui request tìm kiếm và đổi trạng thái
-
+            findTrip()
             //request trả về Ok thi` hiện lên Modal Yes or No
             // Yes thi` send request accept chuyến đi
             // No thì send request từ chối chuyến đi
-            $('#modalYesNo').modal('show')
         } else {
             //gui request đổi trạng thái và cancel tìm kiếm
         }
@@ -63,6 +71,93 @@ $(function () {
         }
     });
 })
+
+function findTrip() {
+    var instance = axios.create({
+        baseURL: 'http://localhost:3000/driver',
+        timeout: 15000,
+    });
+
+    instance.post('/toReady',
+        {
+            driverId: getCookie('driverId'),
+        }, {
+            headers: {
+                'x-access-token': getCookie('accessToken')
+            }
+        })
+        .then(function (res) {
+            return new Promise(function (resolve, reject) {
+                console.log(res);
+                if (res.status === 204) {
+                    // Dua data lay dc vao modal
+                   // $('#modalYesNo').modal('show');
+                    setTimeout($('#modalYesNo').modal('show'), 4000);
+                    $('.btn-accept').click(function (e) {
+                        e.preventDefault();
+                        var instance = axios.create({
+                            baseURL: 'http://localhost:3000/driver',
+                            timeout: 15000,
+                        });
+                        instance.post('/tripCreating',
+                            {
+                                driverId: getCookie('driverId'),
+                                clientId: '???',
+                            }, {
+                                headers: {
+                                    'x-access-token': getCookie('accessToken')
+                                }
+                            })
+                            .then(function (res) {
+                                $('.btn-start').css('display', 'block');
+                                alert('Tao chuyen di thanh cong');
+                                resolve(true);
+                            })
+                            .catch(function (err) {
+                                aleart('Tao chuyen di that bai');
+                                resolve(false);
+                            })
+                    });
+
+                    $('.btn-reject').click(function (e) {
+                        e.preventDefault();
+                        var instance = axios.create({
+                            baseURL: 'http://localhost:3000/driver',
+                            timeout: 15000,
+                        });
+                        instance.post('/??????',
+                            {
+                                driverId: getCookie('driverId'),
+                                clientId: '???',
+                            }, {
+                                headers: {
+                                    'x-access-token': getCookie('accessToken')
+                                }
+                            })
+                            .then(function (res) {
+                                alert('Tu cho chuyen di thanh cong')
+                                resolve(false);
+                            })
+                            .catch(function (err) {
+                                alert('Something wrong');
+                                resolve(false);
+                            })
+                    });
+                } else {
+                    //Do somgthing
+                    alert('Something wrong')
+                }
+            })
+
+        }).catch(function (err) {
+            console.log(err);
+            alert('Tim` kiem gap loi')
+        })
+        .then(function (res) {
+            //Request Again dung hong
+            console.log(res);
+        })
+}
 var currentMarkerLocation;
 var currentLocationName;
 
@@ -177,17 +272,22 @@ $('.save').on("click", function () {
     // console.log(driverId);
 
     var instance = axios.create({
-        baseURL: 'http://localhost:3000/????',
+        baseURL: 'http://localhost:3000/driver',
         timeout: 15000,
     });
 
-    instance.post('',
+    instance.post('/currentLocation',
         {
-            driverId: '??????/',
-            newAddress: currentLocationName
+            driverId: getCookie('driverId'),
+            lat: currentMarkerLocation.lat,
+            lng: currentMarkerLocation.lng
+        }, {
+            headers: {
+                'x-access-token': getCookie('accessToken')
+            }
         })
         .then(function (res) {
-            if (res.status === 200) {
+            if (res.status === 204) {
                 // Do something
                 alert('Cập nhật thành công')
             } else {
@@ -237,6 +337,13 @@ function distanceHaversine(point1, point2) {
     return d;
 }
 
+
+function setCookie(cname, cvalue, exseconds) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exseconds * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
 
 
 

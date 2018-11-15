@@ -12,9 +12,12 @@
       "name": "quyquang",
       "username": "lfj",
       "password": "202cb962ac59075b964b07152d234b70",
-      "status": 0,
+      "status": 2,
       "driverId": "7vxcHci86",
-      "currentLocation": ""
+      "currentLocation": {
+        "lat": 10.765012360379837,
+        "lng": 106.64682640000001
+      }
     }
   ]
 }
