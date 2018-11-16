@@ -6,7 +6,8 @@
       "name": "Nguyen Phuoc Quy Quang",
       "status": 0,
       "driverId": "2l2hEiNNY",
-      "currentLocation": ""
+      "address": "",
+      "latlngAddress":""
     },
     {
       "name": "quyquang",
@@ -14,7 +15,8 @@
       "password": "202cb962ac59075b964b07152d234b70",
       "status": 0,
       "driverId": "7vxcHci86",
-      "currentLocation": ""
+      "address": "",
+      "latlngAddress":""
     }
   ]
 }

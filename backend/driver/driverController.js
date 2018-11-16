@@ -24,13 +24,17 @@ const	WAITING	= 0,
 
 
 router.post('/currentLocation', (req, res) => {
+	// {
+		// driverId:
+	// 	latlngAddress:
+	// 	address:
+	// }
 	var driverId  = req.body.driverId;
-	var currentLocation = {
-		lat : req.body.lat,
-		lng : req.body.lng
-	}
-	driverDB.get('driver').find({"driverId": driverId}).update("currentLocation",
-		x => currentLocation).write();
+	var latlngAddress = req.body.latlngAddress;
+	var address = req.body.address;
+	driverDB.get('driver').find({"driverId": driverId}).update("address",
+		x => address).update("latlngAddress",
+		x => latlngAddress).write();
 	res.statusCode = 204;
     res.end('no data');
 })

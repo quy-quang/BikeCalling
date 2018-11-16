@@ -63,13 +63,13 @@ router.get('/lp', (req, res) => {
 router.post('/', (req, res) => {
     // {
     //  "clientId":...,
-    //  "newAddress":...
+    //  "newAddress":...,
+    //  "latlngAddress":...
     // }
     var newClient = req.body;
     var db = low(adapter);
     var findObject = (db.get('client').find(obj => obj["clientId"] == newClient["clientId"])).update("newAddress",
-        x => newClient["newAddress"]).write();
-
+        x => newClient["newAddress"]).update("latlngAddress", x => newClient["latlngAddress"]).write();
     res.statusCode = 200;
     res.json({findObject});
 })

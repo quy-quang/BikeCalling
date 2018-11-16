@@ -7,7 +7,11 @@
       "note": "Không có gì cả",
       "iat": 1541757731,
       "status": 2,
-      "newAddress": "183 Nguyễn Chí Thanh, Phường 12, Quận 5, Hồ Chí Minh, Việt Nam",
+      "newAddress": "227 Nguyen Van Cu, Ward 4, District 5, Ho Chi Minh City",
+      "latlngAddress": {
+        "lat": 107,
+        "lng": 60
+      },
       "clientId": "L-hHE_CAO"
     },
     {
@@ -18,6 +22,10 @@
       "iat": 1541822161,
       "status": 0,
       "newAddress": "",
+      "latlngAddress": {
+        "lat": 123,
+        "lng": 456
+      },
       "clientId": "pOr_jX58H"
     },
     {
@@ -28,6 +36,10 @@
       "iat": 1542079923,
       "status": 0,
       "newAddress": "",
+      "latlngAddress": {
+        "lat": 123,
+        "lng": 456
+      },
       "clientId": "g8b06WiQE"
     },
     {
@@ -38,6 +50,10 @@
       "iat": 1542080191,
       "status": 0,
       "newAddress": "",
+      "latlngAddress": {
+        "lat": 123,
+        "lng": 456
+      },
       "clientId": "EmJj34sRo"
     },
     {
@@ -48,6 +64,10 @@
       "iat": 1542033420,
       "status": 0,
       "newAddress": "",
+      "latlngAddress": {
+        "lat": 123,
+        "lng": 456
+      },
       "clientId": "C6BPauJ2W"
     },
     {
@@ -58,6 +78,10 @@
       "iat": 1542179418,
       "status": 0,
       "newAddress": "",
+      "latlngAddress": {
+        "lat": 123,
+        "lng": 456
+      },
       "clientId": "Rq6UQzQKc"
     },
     {
@@ -68,6 +92,10 @@
       "iat": 1542181375,
       "status": 0,
       "newAddress": "210, Nguyễn Khắc Nhu, Phường Cô Giang, Quận 1, Thành Phố Hồ Chí Minh, Thành Phố Hồ Chí Minh, Phường Cô Giang, Quận 1, Hồ Chí Minh, Việt Nam",
+      "latlngAddress": {
+        "lat": 123,
+        "lng": 456
+      },
       "clientId": "1ue8znyxs"
     },
     {
@@ -78,6 +106,10 @@
       "iat": 1542183509,
       "status": 0,
       "newAddress": "",
+      "latlngAddress": {
+        "lat": 123,
+        "lng": 456
+      },
       "clientId": "n5Aw0FLPf"
     },
     {
@@ -88,6 +120,10 @@
       "iat": 1542183941,
       "status": 0,
       "newAddress": "",
+      "latlngAddress": {
+        "lat": 123,
+        "lng": 456
+      },
       "clientId": "Gb_2kCuZp"
     }
   ]
