@@ -7,7 +7,7 @@
       "status": 0,
       "driverId": "2l2hEiNNY",
       "address": "",
-      "latlngAddress":""
+      "latlngAddress": ""
     },
     {
       "name": "quyquang",
@@ -15,8 +15,11 @@
       "password": "202cb962ac59075b964b07152d234b70",
       "status": 2,
       "driverId": "7vxcHci86",
-      "address": "",
-      "latlngAddress":""
+      "address": "91 Võ Văn Tần, Phường 6, Quận 3, Hồ Chí Minh, Việt Nam",
+      "latlngAddress": {
+        "lat": 10.776604447255794,
+        "lng": 106.6904265669342
+      }
     }
   ]
 }

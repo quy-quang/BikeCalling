@@ -1,130 +1,18 @@
 {
   "client": [
     {
-      "name": "Cao Bá Đông",
-      "phoneNumber": "0123654987",
-      "orderAddress": "15 Lê Đại Hành, quận 11, Tp Hồ Chí Minh",
-      "note": "Không có gì cả",
-      "iat": 1541757731,
-      "status": 2,
-      "newAddress": "227 Nguyen Van Cu, Ward 4, District 5, Ho Chi Minh City",
-      "latlngAddress": {
-        "lat": 107,
-        "lng": 60
-      },
-      "clientId": "L-hHE_CAO"
-    },
-    {
       "name": "Vòng Chí Tài",
       "phoneNumber": "0981867457",
       "orderAddress": "227 Nguyen Van Cu, Ward 4, District 5, Ho Chi Minh City",
       "note": "",
       "iat": 1541822161,
       "status": 0,
-      "newAddress": "",
+      "newAddress": "235 Đường Nguyễn Văn Cừ, Phường 4, Quận 5, Hồ Chí Minh, Việt Nam",
+      "clientId": "pOr_jX58H",
       "latlngAddress": {
-        "lat": 123,
-        "lng": 456
-      },
-      "clientId": "pOr_jX58H"
-    },
-    {
-      "name": "John Stone",
-      "phoneNumber": "0123456789",
-      "orderAddress": "49 Đinh Tiên Hoàng, quận Bình Thạnh, Tp Hồ Chí Minh",
-      "note": "abcxyz",
-      "iat": 1542079923,
-      "status": 0,
-      "newAddress": "",
-      "latlngAddress": {
-        "lat": 123,
-        "lng": 456
-      },
-      "clientId": "g8b06WiQE"
-    },
-    {
-      "name": "Tide Hunter",
-      "phoneNumber": "0123456789",
-      "orderAddress": "150 Lữ Gia, quận 11, tp Hồ Chí Minh",
-      "note": "abcxyz",
-      "iat": 1542080191,
-      "status": 0,
-      "newAddress": "",
-      "latlngAddress": {
-        "lat": 123,
-        "lng": 456
-      },
-      "clientId": "EmJj34sRo"
-    },
-    {
-      "name": "Cao Bá Đông",
-      "phoneNumber": "0123654987",
-      "orderAddress": "15 Lê Đại Hành, quận 11, Tp Hồ Chí Minh",
-      "note": "Không có gì cả",
-      "iat": 1542033420,
-      "status": 0,
-      "newAddress": "",
-      "latlngAddress": {
-        "lat": 123,
-        "lng": 456
-      },
-      "clientId": "C6BPauJ2W"
-    },
-    {
-      "name": "Tôn Thất Vĩnh",
-      "phoneNumber": "0123456789",
-      "orderAddress": "135B Trần Hưng Đạo, Quận 1, Thành phố Hồ Chí Minh",
-      "note": "No",
-      "iat": 1542179418,
-      "status": 0,
-      "newAddress": "",
-      "latlngAddress": {
-        "lat": 123,
-        "lng": 456
-      },
-      "clientId": "Rq6UQzQKc"
-    },
-    {
-      "name": "Trần Hoài Nam",
-      "phoneNumber": "0122345667",
-      "orderAddress": "135 Nguyễn Cư Trinh, Quận 1, Thành phố Hồ Chí Minh",
-      "note": "",
-      "iat": 1542181375,
-      "status": 0,
-      "newAddress": "210, Nguyễn Khắc Nhu, Phường Cô Giang, Quận 1, Thành Phố Hồ Chí Minh, Thành Phố Hồ Chí Minh, Phường Cô Giang, Quận 1, Hồ Chí Minh, Việt Nam",
-      "latlngAddress": {
-        "lat": 123,
-        "lng": 456
-      },
-      "clientId": "1ue8znyxs"
-    },
-    {
-      "name": "Trương Thành Đạt",
-      "phoneNumber": "0134234324",
-      "orderAddress": "123 Trần Hưng Đạo, Quận 1, tp hcm",
-      "note": "",
-      "iat": 1542183509,
-      "status": 0,
-      "newAddress": "",
-      "latlngAddress": {
-        "lat": 123,
-        "lng": 456
-      },
-      "clientId": "n5Aw0FLPf"
-    },
-    {
-      "name": "Lê Văn Tí Nho",
-      "phoneNumber": "0903123927",
-      "orderAddress": "Cầu Chữ Y, tp Hồ Chí Minh",
-      "note": "No",
-      "iat": 1542183941,
-      "status": 0,
-      "newAddress": "",
-      "latlngAddress": {
-        "lat": 123,
-        "lng": 456
-      },
-      "clientId": "Gb_2kCuZp"
+        "lat": 10.763882687453409,
+        "lng": 106.6819142079346
+      }
     }
   ]
 }

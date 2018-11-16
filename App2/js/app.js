@@ -146,7 +146,8 @@ $('.save').on("click", function () {
     instance.post('',
         {
             clientId: currentId,
-            newAddress: currentLocationName
+            newAddress: currentLocationName,
+            latlngAddress: currentMarkerLocation,
         })
         .then(function (res) {
             if (res.status === 200) {

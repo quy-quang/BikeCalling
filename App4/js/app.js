@@ -279,8 +279,8 @@ $('.save').on("click", function () {
     instance.post('/currentLocation',
         {
             driverId: getCookie('driverId'),
-            lat: currentMarkerLocation.lat,
-            lng: currentMarkerLocation.lng
+            latlngAddress: currentMarkerLocation,
+            address: currentLocationName
         }, {
             headers: {
                 'x-access-token': getCookie('accessToken')
