@@ -22,6 +22,66 @@ const	WAITING	= 0,
 		MOVING	= 1,
 		DONE	= 2;
 
+const CLIENT_LOCATING = 0,
+	CLIENT_LOCATED = 1,
+	CLIENT_READY = 2,
+	CLIENT_MOVING = 3,
+	CLIENT_DONE = 4;
+
+const LOOP_FIND_REQUEST = 4;
+
+Number.prototype.toRad = function () {
+    return this * Math.PI / 180;
+}
+// Hàm tính khoảng cách Haversine giữa 2 tọa độ trên map
+function distanceHaversine(point1, point2) {
+    x2 = point2.lng - point1.lng;
+    x1 = point2.lat - point1.lat;
+    R = 6371;
+    dLongitude = x2.toRad();
+    dLatitude = x1.toRad();
+    var a = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) +
+        Math.cos(point1.lat.toRad()) * Math.cos(point2.lat.toRad()) *
+        Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    return d;
+}
+
+
+
+var findNearestDriver = (clientObj, driverList) => {
+	var clientLatlng = clientObj.latlngAddress;
+	// console.log(clientObj);
+	// console.log(clientLatlng)
+	var nearestDriver = null;
+	var minDistance = 9999999;
+	for (var i = driverList.length - 1; i >= 0; i--) {
+		var distance = distanceHaversine(clientLatlng, driverList[i].latlngAddress);
+		if (minDistance > distance){
+			nearestDriver = driverList[i].driverId;
+			minDistance = distance
+		}
+	}
+	return nearestDriver;
+}
+
+var findRequest = idDriver => {
+	// console.log('abbc' + idDriver)
+	var clientAdapter = new fileSync('./clientDB.json');
+	var clientDB = low(clientAdapter);
+	var client = clientDB.get('client').filter({"status": CLIENT_LOCATED}).value();
+	var driver = driverDB.get('driver').filter({"status": READY}).value();
+	// console.log(client);
+	// console.log(driver);
+
+	for (var i = client.length - 1; i >= 0; i--) {
+		//console.log(client[i]);
+		nearestDriver = findNearestDriver(client[i], driver);
+		if (nearestDriver == idDriver) return client[i];
+	}
+	return null;	
+}
 
 router.post('/currentLocation', (req, res) => {
 	// {
@@ -39,10 +99,35 @@ router.post('/currentLocation', (req, res) => {
     res.end('no data');
 })
 
+
 router.post('/toReady', (req, res) => {
 	var driverId = req.body.driverId;
+	// console.log(req)
 	driverDB.get('driver').find({"driverId": driverId}).update("status",
 		x => READY).write();
+
+	var loop = 0;
+    var fn = () => {
+    	var request = findRequest(driverId);
+    	console.log(request);
+    	res.statusCode = 200;
+        if (request != null) {
+            res.json({
+                request
+            });
+        } else {
+            loop++;
+            console.log(`loop find client request: ${loop}`);
+            if (loop < LOOP_FIND_REQUEST) {
+                setTimeout(fn, 2500);
+            } else {
+                res.statusCode = 204;
+                res.end('no data');
+            }
+        }
+    }
+
+    fn();
 	res.statusCode = 204;
 	res.end('no data');
 })
