@@ -61,4 +61,32 @@ router.post('/login', (req, res) => {
 	}
 })
 
+router.post('/getAccessTokenFromRefreshToken', (req, res) => {
+	var refreshTokenAdapter = new fileSync('./refreshTokenDB.json');
+    var refreshTokenDB = low(refreshTokenAdapter);
+	var refreshToken = req.body.refreshToken;
+	// console.log(refreshToken);
+	var driverId = refreshTokenDB.get('refreshTokenList').find({"refreshToken":refreshToken}).value().driverId;
+	// console.log(driverId);
+
+	if (driverId == undefined){
+		res.statusCode = 200;
+		res.json({
+			msg: "uncorrect refreshToken"
+		})
+	}
+	else{
+		var userEntity = driverDB.get('driver').find({"driverId": driverId}).value();
+		if (userEntity != undefined){
+			res.statusCode = 200;
+			var acToken = authRepo.generationAccessToken(userEntity);
+			res.json({
+				user: userEntity,
+				access_token : acToken,
+			})
+		}
+	}
+	
+})
+
 module.exports = router;
