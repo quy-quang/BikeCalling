@@ -70,7 +70,7 @@ var findRequest = idDriver => {
 	// console.log('abbc' + idDriver)
 	var clientAdapter = new fileSync('./clientDB.json');
 	var clientDB = low(clientAdapter);
-	var client = clientDB.get('client').filter({"status": CLIENT_LOCATED}).value();
+	var client = clientDB.get('client').filter({"status": CLIENT_LOCATED}).filter({idDriver: undefined}).value();
 	var driver = driverDB.get('driver').filter({"status": READY}).value();
 	// console.log(client);
 	// console.log(driver);
@@ -82,6 +82,25 @@ var findRequest = idDriver => {
 	}
 	return null;	
 }
+
+router.post('/declineRequest', (req, res) => {
+	// {
+	// 	"driverId":
+	// 	"clientId"
+	// }
+
+	var clientAdapter = new fileSync('./clientDB.json');
+	var clientDB = low(clientAdapter);
+
+	var clientDecline = clientDB.get('client').find({"clientId": req.body.clientId}).value();
+	
+	clientDecline[req.body.driverId] = true;
+
+	clientDB.get('client').find({"clientId": req.body.clientId}).update(x => clientDecline).write();
+
+	res.statusCode = 204;
+    res.end('no data');
+})
 
 router.post('/currentLocation', (req, res) => {
 	// {
