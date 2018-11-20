@@ -54,7 +54,99 @@ $(function () {
         //Lay trạng thai truoc
         if ($(this).find('.active').html() == 'Nghỉ ngơi') {
             // gui request tìm kiếm và đổi trạng thái
-            findTrip()
+            console.log('abc');
+            findTrip();
+            function findTrip() {
+                var instance = axios.create({
+                    baseURL: 'http://localhost:3000/driver',
+                    timeout: 15000,
+                });
+
+                instance.post('/toReady',
+                    {
+                        driverId: getCookie('driverId'),
+                    }, {
+                        headers: {
+                            'x-access-token': getCookie('accessToken')
+                        }
+                    })
+                    .then(function (res) {
+                        return new Promise(function (resolve, reject) {
+                            console.log(res);
+                            if (res.status === 200) {
+                                console.log('abc');
+                                // Dua data lay dc vao modal
+                                //    $('#modalYesNo').modal('show');
+                                // setTimeout(function () {
+                                //     $('#modalYesNo').modal('hide')
+                                // }, 10000);
+                                $('#modalYesNo').modal('toggle')
+
+                                $('.btn-accept').click(function (e) {
+                                    //  e.preventDefault();
+                                    $('#modalYesNo').modal('toggle')
+                                    var instance = axios.create({
+                                        baseURL: 'http://localhost:3000/driver',
+                                        timeout: 15000,
+                                    });
+                                    instance.post('/tripCreating',
+                                        {
+                                            driverId: getCookie('driverId'),
+                                            clientId: res.data.request.clientId,
+                                        }, {
+                                            headers: {
+                                                'x-access-token': getCookie('accessToken')
+                                            }
+                                        })
+                                        .then(function (res) {
+                                            $('.btn-start').css('display', 'block');
+                                            alert('Tao chuyen di thanh cong');
+                                            resolve(true);
+                                        })
+                                        .catch(function (err) {
+                                            alert('Tao chuyen di that bai');
+                                            resolve(false);
+                                        })
+                                });
+
+                                $('.btn-reject').click(function (e) {
+                                    // e.preventDefault();
+                                    $('#modalYesNo').modal('toggle')
+                                    var instance = axios.create({
+                                        baseURL: 'http://localhost:3000/driver',
+                                        timeout: 15000,
+                                    });
+                                    instance.post('/??????',
+                                        {
+                                            driverId: getCookie('driverId'),
+                                            clientId: '???',
+                                        }, {
+                                            headers: {
+                                                'x-access-token': getCookie('accessToken')
+                                            }
+                                        })
+                                        .then(function (res) {
+                                            alert('Tu cho chuyen di thanh cong')
+                                            resolve(false);
+                                        })
+                                        .catch(function (err) {
+                                            alert('Something wrong');
+                                            resolve(false);
+                                        })
+                                });
+                            }
+                        })
+
+                    })
+                    .then(function (res) {
+                        //Request Again dung hong
+                        console.log(res);
+                        // if(res == false){
+                        //     findTrip()
+                        // }
+                        // return res;
+                    })
+            }
             //request trả về Ok thi` hiện lên Modal Yes or No
             // Yes thi` send request accept chuyến đi
             // No thì send request từ chối chuyến đi
@@ -72,92 +164,7 @@ $(function () {
     });
 })
 
-function findTrip() {
-    var instance = axios.create({
-        baseURL: 'http://localhost:3000/driver',
-        timeout: 15000,
-    });
 
-    instance.post('/toReady',
-        {
-            driverId: getCookie('driverId'),
-        }, {
-            headers: {
-                'x-access-token': getCookie('accessToken')
-            }
-        })
-        .then(function (res) {
-            return new Promise(function (resolve, reject) {
-                console.log(res);
-                if (res.status === 204) {
-                    // Dua data lay dc vao modal
-                   // $('#modalYesNo').modal('show');
-                    setTimeout($('#modalYesNo').modal('show'), 4000);
-                    $('.btn-accept').click(function (e) {
-                        e.preventDefault();
-                        var instance = axios.create({
-                            baseURL: 'http://localhost:3000/driver',
-                            timeout: 15000,
-                        });
-                        instance.post('/tripCreating',
-                            {
-                                driverId: getCookie('driverId'),
-                                clientId: '???',
-                            }, {
-                                headers: {
-                                    'x-access-token': getCookie('accessToken')
-                                }
-                            })
-                            .then(function (res) {
-                                $('.btn-start').css('display', 'block');
-                                alert('Tao chuyen di thanh cong');
-                                resolve(true);
-                            })
-                            .catch(function (err) {
-                                aleart('Tao chuyen di that bai');
-                                resolve(false);
-                            })
-                    });
-
-                    $('.btn-reject').click(function (e) {
-                        e.preventDefault();
-                        var instance = axios.create({
-                            baseURL: 'http://localhost:3000/driver',
-                            timeout: 15000,
-                        });
-                        instance.post('/??????',
-                            {
-                                driverId: getCookie('driverId'),
-                                clientId: '???',
-                            }, {
-                                headers: {
-                                    'x-access-token': getCookie('accessToken')
-                                }
-                            })
-                            .then(function (res) {
-                                alert('Tu cho chuyen di thanh cong')
-                                resolve(false);
-                            })
-                            .catch(function (err) {
-                                alert('Something wrong');
-                                resolve(false);
-                            })
-                    });
-                } else {
-                    //Do somgthing
-                    alert('Something wrong')
-                }
-            })
-
-        }).catch(function (err) {
-            console.log(err);
-            alert('Tim` kiem gap loi')
-        })
-        .then(function (res) {
-            //Request Again dung hong
-            console.log(res);
-        })
-}
 var currentMarkerLocation;
 var currentLocationName;
 

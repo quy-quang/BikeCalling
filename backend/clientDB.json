@@ -1,20 +1,6 @@
 {
   "client": [
     {
-      "name": "Cao Ba Dong",
-      "phoneNumber": "0981867457",
-      "orderAddress": "227 Nguyen Van Cu, Ward 4, District 5, Ho Chi Minh City",
-      "note": "",
-      "iat": 1541822161,
-      "status": 1,
-      "newAddress": "235 Đường Nguyễn Văn Cừ, Phường 4, Quận 5, Hồ Chí Minh, Việt Nam",
-      "clientId": "pOr_jX58H",
-      "latlngAddress": {
-        "lat": 101.763882687453409,
-        "lng": 106.6819142079346
-      }
-    },
-    {
       "name": "Vòng Chí Tài",
       "phoneNumber": "0981867457",
       "orderAddress": "227 Nguyen Van Cu, Ward 4, District 5, Ho Chi Minh City",
