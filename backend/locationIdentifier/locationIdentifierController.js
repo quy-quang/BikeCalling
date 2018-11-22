@@ -68,8 +68,11 @@ router.post('/', (req, res) => {
     // }
     var newClient = req.body;
     var db = low(adapter);
-    var findObject = (db.get('client').find(obj => obj["clientId"] == newClient["clientId"])).update("newAddress",
-        x => newClient["newAddress"]).update("latlngAddress", x => newClient["latlngAddress"]).write();
+    var findObject = (db.get('client').find(obj => obj["clientId"] == newClient["clientId"]))
+        .update("newAddress",x => newClient["newAddress"])
+        .update("latlngAddress", x => newClient["latlngAddress"])
+        .update("status", x => 1)
+        .write();
     res.statusCode = 200;
     res.json({findObject});
 })

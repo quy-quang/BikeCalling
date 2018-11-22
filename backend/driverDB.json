@@ -13,12 +13,12 @@
       "name": "quyquang",
       "username": "lfj",
       "password": "202cb962ac59075b964b07152d234b70",
-      "status": 2,
+      "status": 1,
       "driverId": "7vxcHci86",
-      "address": "91 Võ Văn Tần, Phường 6, Quận 3, Hồ Chí Minh, Việt Nam",
+      "address": "135 Bình Thới, Phường 11, Quận 11, Hồ Chí Minh, Việt Nam",
       "latlngAddress": {
-        "lat": 10.776604447255794,
-        "lng": 106.6904265669342
+        "lat": 10.7660521,
+        "lng": 106.6476364
       }
     }
   ]

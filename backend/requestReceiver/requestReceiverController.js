@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
 
 	client["iat"] = time_request;
 	client["status"] = LOCATING;
-	client["newAddress"] = "";
+	client["newAddress"] = client.orderAddress;
 	client["clientId"] = shortid.generate();
 	clientDB.get('client').push(client).write();
 

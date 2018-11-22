@@ -27,6 +27,9 @@ window.onload = function () {
 
 var loadCategories = function () {
 
+    // $('#modalYesNo').modal({
+    //     keyboard: false
+    //   })
     var instance = axios.create({
         baseURL: 'http://localhost:3000/locationIdentifier',
         timeout: 15000
