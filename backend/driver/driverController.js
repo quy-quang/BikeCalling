@@ -16,7 +16,8 @@ var clientAdapter = new fileSync('./clientDB.json');
 // Trạng thái của Driver
 const OFFILINE = 0,
 	STANDBY = 1,
-	READY = 2;
+	READY = 2,
+	CANCEL = 3;
 
 // Trạng thái của chuyến đi
 const WAITING = 0,
@@ -56,10 +57,13 @@ var findNearestDriver = (clientObj, driverList) => {
 	var nearestDriver = null;
 	var minDistance = 9999999;
 	for (var i = driverList.length - 1; i >= 0; i--) {
-		var distance = distanceHaversine(clientLatlng, driverList[i].latlngAddress);
-		if (minDistance > distance) {
-			nearestDriver = driverList[i].driverId;
-			minDistance = distance
+		if (clientObj[driverList[i].driverId] != true) {
+			var distance = distanceHaversine(clientLatlng, driverList[i].latlngAddress);
+			console.log(distance);
+			if (minDistance > distance) {
+				nearestDriver = driverList[i].driverId;
+				minDistance = distance
+			}
 		}
 	}
 	return nearestDriver;
@@ -67,7 +71,7 @@ var findNearestDriver = (clientObj, driverList) => {
 
 // Hàm tìm kiếm Driver
 var findRequest = idDriver => {
-	console.log('abbc' + idDriver)
+	console.log(idDriver)
 	var a = 'status'
 	var clientDB = low(clientAdapter);
 	var driverDB = low(driverAdapter);
@@ -139,30 +143,57 @@ router.post('/toReady', (req, res) => {
 	driverDB.get('driver').find({ "driverId": driverId })
 		.update("status", x => READY)
 		.write();
+	res.statusCode = 200;
+	res.end('Success');
 
-	var loop = 0;
-	var fn = () => {
-		var request = findRequest(driverId);
-		res.statusCode = 200;
-		if (request != null) {
-			res.json({
-				request
-			});
-		} else {
-			loop++;
-			console.log(`loop find client request: ${loop}`);
-			if (loop < LOOP_FIND_REQUEST) {
-				setTimeout(fn, 2500);
+
+})
+
+router.post('/toStandby', (req, res) => {
+	var driverDB = low(driverAdapter);
+	var driverId = req.body.driverId;
+
+	// Chuyển trạng thái của driver
+	driverDB.get('driver').find({ "driverId": driverId })
+		.update("status", x => STANDBY)
+		.write();
+	res.statusCode = 200;
+	res.end('Success');
+})
+
+router.post('/findTrip', (req, res) => {
+	var driverDB = low(driverAdapter);
+	var driverId = req.body.driverId;
+
+	// Chuyển trạng thái của driver
+	driverEntry = driverDB.get('driver').find({ "driverId": driverId }).value();
+
+	if (driverEntry.status == 1) {
+		res.statusCode = 205;
+		res.end('Cancel');
+	} else {
+		var loop = 0;
+		var fn = () => {
+			var request = findRequest(driverId);
+			console.log(request);
+			res.statusCode = 200;
+			if (request != null) {
+				res.json({
+					request
+				});
 			} else {
-				res.statusCode = 204;
-				res.end('no data');
+				loop++;
+				console.log(`loop find client request: ${loop}`);
+				if (loop < LOOP_FIND_REQUEST) {
+					setTimeout(fn, 2500);
+				} else {
+					res.statusCode = 204;
+					res.end('no data');
+				}
 			}
 		}
+		fn();
 	}
-
-	fn();
-	res.statusCode = 204;
-	res.end('no data');
 })
 
 // Hàm đăng xuất
@@ -208,6 +239,10 @@ router.post('/tripCreating', (req, res) => {
 		.write();
 
 	var time_request = moment().unix();
+
+	clientDB.get('client').find({ "clientId": clientId })
+		.update("iat", x => time_request)
+		.write();
 	// Tạo chuyến đi
 	tripEntity["iat"] = time_request;
 	tripEntity["status"] = WAITING;
@@ -229,8 +264,13 @@ router.post('/tripStarting', (req, res) => {
 	var entryTrip = tripDB.get('trip').find({ "tripId": req.body.tripId })
 		.value();
 
+	var time_request = moment().unix();
+
 	tripDB.get('trip').find({ "tripId": req.body.tripId })
 		.update("status", x => MOVING)
+		.write();
+	tripDB.get('trip').find({ "tripId": req.body.tripId })
+		.update("iat", x => time_request)
 		.write();
 
 	var driverId = entryTrip.driverId;
@@ -239,6 +279,10 @@ router.post('/tripStarting', (req, res) => {
 	clientDB.get('client').find({ "clientId": clientId })
 		.update("status", x => CLIENT_MOVING)
 		.write();
+	clientDB.get('client').find({ "clientId": clientId })
+		.update("iat", x => time_request)
+		.write();
+
 	driverDB.get('driver').find({ "driverId": driverId })
 		.update("status", x => STANDBY)
 		.write();
@@ -253,8 +297,16 @@ router.post('/tripFinishing', (req, res) => {
 	var clientDB = low(clientAdapter);
 	var driverDB = low(driverAdapter);
 
+	var entryTrip = tripDB.get('trip').find({ "tripId": req.body.tripId }).value();
+
+	var time_request = moment().unix();
+
 	tripDB.get('trip').find({ "tripId": req.body.tripId })
 		.update("status", x => DONE)
+		.write();
+
+	tripDB.get('trip').find({ "tripId": req.body.tripId })
+		.update("iat", x => time_request)
 		.write();
 
 	var driverId = entryTrip.driverId;
@@ -263,6 +315,11 @@ router.post('/tripFinishing', (req, res) => {
 	clientDB.get('client').find({ "clientId": clientId })
 		.update("status", x => CLIENT_DONE)
 		.write();
+
+	clientDB.get('client').find({ "clientId": clientId })
+		.update("iat", x => time_request)
+		.write();
+		
 	driverDB.get('driver').find({ "driverId": driverId })
 		.update("status", x => STANDBY)
 		.write();

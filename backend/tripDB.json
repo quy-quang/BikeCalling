@@ -2,45 +2,24 @@
   "trip": [
     {
       "driverId": "7vxcHci86",
-      "clientId": "zCzfXVo1a",
-      "iat": 1542881659,
-      "status": 0,
-      "tripId": "oSskCCbCo"
-    },
-    {
-      "driverId": "7vxcHci86",
-      "clientId": "5KxcezjnB",
-      "iat": 1542881938,
-      "status": 0,
-      "tripId": "Nyrul7_Wj"
-    },
-    {
-      "driverId": "7vxcHci86",
       "clientId": "pOr_jX58H",
-      "iat": 1542882170,
+      "iat": 1542967233,
       "status": 2,
-      "tripId": "8DC33B8AM"
+      "tripId": "lSU5h3sKK"
     },
     {
       "driverId": "7vxcHci86",
       "clientId": "zCzfXVo1a",
-      "iat": 1542883899,
+      "iat": 1542968560,
       "status": 2,
-      "tripId": "M_VpuVdyP"
+      "tripId": "5wLXy9kfq"
     },
     {
       "driverId": "7vxcHci86",
       "clientId": "5KxcezjnB",
-      "iat": 1542883926,
+      "iat": 1542968599,
       "status": 2,
-      "tripId": "4i65-0Ldv"
-    },
-    {
-      "driverId": "7vxcHci86",
-      "clientId": "ldzTTCT7R",
-      "iat": 1542884004,
-      "status": 2,
-      "tripId": "w8XuDhfz2"
+      "tripId": "_LHoeBMtK"
     }
   ]
 }

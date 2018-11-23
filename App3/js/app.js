@@ -79,6 +79,20 @@ var loadCategories = function () {
         })
 }
 
+function initMap(origin, destination) {
+    var location = {
+        "lat": 33.3632256,
+        "lng": -117.0874871
+    }
+    var map = new google.maps.Map(
+        document.getElementById('map'),
+        {
+            zoom: 15,
+            center: location
+        });
+    // currentMarkerLocation = location;
+    map.setZoom(15);
+}
 
 $('#myModal').on('show.bs.modal', function (e) {
 
@@ -98,41 +112,41 @@ $('#myModal').on('show.bs.modal', function (e) {
             var driverAddress = res.data.mapAndDriverInfo.driverAddress;
             var customerAddress = res.data.mapAndDriverInfo.clientAddress;
             $('.driverName').html(res.data.mapAndDriverInfo.nameOfDriver);
-            $(selector).html(htmlString);
-            initMap(driverAddress, customerAddress);
-
+            directionMap(driverAddress, customerAddress);
         }
     }).catch(err => {
         console.log(err)
     })
-});
 
-function initMap(origin, destination) {
-    var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer;
-    var location = {
-        "lat": 33.3632256,
-        "lng": -117.0874871
-    }
-    var map = new google.maps.Map(
-        document.getElementById('map'),
-        {
-            zoom: 15,
-            center: location
-        });
-    // currentMarkerLocation = location;
-    map.setZoom(15);
-    directionsDisplay.setMap(map);
-
-    directionsService.route({
-        origin: origin,
-        destination: destination,
-        travelMode: 'DRIVING'
-    }, function (response, status) {
-        if (status === 'OK') {
-            directionsDisplay.setDirections(response);
-        } else {
-            window.alert('Directions request failed due to ' + status);
+    function directionMap(origin, destination) {
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        
+        var location = {
+            "lat": 33.3632256,
+            "lng": -117.0874871
         }
-    });
-}
+        var map = new google.maps.Map(
+            document.getElementById('map'),
+            {
+                zoom: 15,
+                center: location
+            });
+        // currentMarkerLocation = location;
+        map.setZoom(15);
+
+        directionsDisplay.setMap(map);
+
+        directionsService.route({
+            origin: origin,
+            destination: destination,
+            travelMode: 'DRIVING'
+        }, function (response, status) {
+            if (status === 'OK') {
+                directionsDisplay.setDirections(response);
+            } else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        });
+    }
+});

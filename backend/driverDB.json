@@ -1,24 +1,27 @@
 {
   "driver": [
     {
-      "user": "lfj",
+      "username": "vrdong",
       "password": "202cb962ac59075b964b07152d234b70",
-      "name": "Nguyen Phuoc Quy Quang",
-      "status": 0,
+      "name": "Cao Bá Đông",
+      "status": 1,
       "driverId": "2l2hEiNNY",
-      "address": "",
-      "latlngAddress": ""
+      "address": "143 Bình Thới, Phường 11, Quận 11, Hồ Chí Minh, Vietnam",
+      "latlngAddress": {
+        "lat": 10.766027,
+        "lng": 106.647643
+      }
     },
     {
-      "name": "quyquang",
+      "name": "Nguyễn Phước Quý Quang",
       "username": "lfj",
       "password": "202cb962ac59075b964b07152d234b70",
       "status": 1,
       "driverId": "7vxcHci86",
       "address": "135 Bình Thới, Phường 11, Quận 11, Hồ Chí Minh, Việt Nam",
       "latlngAddress": {
-        "lat": 10.7660521,
-        "lng": 106.6476364
+        "lat": 10.7660434,
+        "lng": 106.6476536
       }
     }
   ]

@@ -30,7 +30,7 @@ $(function () {
                 if (res.data.auth == true) {
                     $('.login-page').css('display', 'none');
                     $('.home-page').css('display', 'block');
-                    setCookie('accessToken', res.data.access_token, 600);
+                    setCookie('accessToken', res.data.access_token, 10);
                     setCookie('refreshToken', res.data.refresh_token, 10800);
                     setCookie('driverId', res.data.user.driverId, 10800);
                     setCookie('driverName', res.data.user.name, 10800);
@@ -49,144 +49,211 @@ $(function () {
 
     $('.change-status').change(function () {
         if (this.checked == true) {
-            checkDriverAddress(findTrip);
+            checkDriverAddress(toReady);
             $('.status-display').html('READY');
         }
         else {
+            toStandby();
             $('.status-display').html('STAND BY');
         }
     })
 
+    function toStandby() {
+        var instance = axios.create({
+            baseURL: 'http://localhost:3000/driver',
+            timeout: 15000,
+        });
+
+        instance.post('/toStandby',
+            {
+                driverId: getCookie('driverId'),
+            }, {
+                headers: {
+                    'x-access-token': getCookie('accessToken')
+                }
+            })
+            .then(function (res) {
+                console.log(res);
+                if (res.status === 200) {
+                    console.log('huy find')
+                }
+            })
+            .catch(err => {
+                getAccessToken(toStandby);
+            })
+    }
+
+    var checkBTN = false;
+    function toReady() {
+        checkBTN = false;
+        var instance = axios.create({
+            baseURL: 'http://localhost:3000/driver',
+            timeout: 15000,
+        });
+
+        instance.post('/toReady',
+            {
+                driverId: getCookie('driverId'),
+            }, {
+                headers: {
+                    'x-access-token': getCookie('accessToken')
+                }
+            })
+            .then(function (res) {
+                console.log(res);
+                if (res.status === 200) {
+                    findTrip();
+                }
+            })
+            .catch(err => {
+                getAccessToken(toReady);
+            })
+    }
+
+    
     //Xử lý sự kiện nhấn button Accept
     $('.btn-accept').click(function (e) {
-        $('#modalYesNo').modal('hide');
-        var instance = axios.create({
-            baseURL: 'http://localhost:3000/driver',
-            timeout: 15000,
-        });
-        instance.post('/tripCreating',
-            {
-                driverId: getCookie('driverId'),
-                clientId: getCookie('clientId'),
-            }, {
-                headers: {
-                    'x-access-token': getCookie('accessToken')
-                }
-            })
-            .then(function (res) {
-                console.log(res);
-                if (res.status == 201) {
-                    setCookie('tripId',res.data.tripId);
-                    $('.btn-start').css('display', 'block');
-                    alert('Tao chuyen di thanh cong');
-                    // Ve ban do
-                    var map1 = new google.maps.Map(
-                        document.getElementById('directionMap'),
-                        {
-                            zoom: 15,
-                            center: location
+        acceptTrip();
+        function acceptTrip() {
+            $('#modalYesNo').modal('hide');
+            var instance = axios.create({
+                baseURL: 'http://localhost:3000/driver',
+                timeout: 15000,
+            });
+            instance.post('/tripCreating',
+                {
+                    driverId: getCookie('driverId'),
+                    clientId: getCookie('clientId'),
+                }, {
+                    headers: {
+                        'x-access-token': getCookie('accessToken')
+                    }
+                })
+                .then(function (res) {
+                    console.log(res);
+                    if (res.status == 201) {
+                        setCookie('tripId', res.data.tripId);
+                        $('.btn-start').css('display', 'block');
+                        alert('Tao chuyen di thanh cong');
+                        // Ve ban do
+                        var map1 = new google.maps.Map(
+                            document.getElementById('directionMap'),
+                            {
+                                zoom: 15,
+                                center: location
+                            });
+                        var directionsService = new google.maps.DirectionsService;
+                        var directionsDisplay = new google.maps.DirectionsRenderer;
+                        directionsDisplay.setMap(map1);
+
+                        directionsService.route({
+                            origin: getCookie('driverAddress'),
+                            destination: getCookie('clientAddress'),
+                            travelMode: 'DRIVING'
+                        }, function (response, status) {
+                            if (status === 'OK') {
+                                directionsDisplay.setDirections(response);
+                            } else {
+                                window.alert('Directions request failed due to ' + status);
+                            }
                         });
-                    var directionsService = new google.maps.DirectionsService;
-                    var directionsDisplay = new google.maps.DirectionsRenderer;
-                    directionsDisplay.setMap(map1);
-
-                    directionsService.route({
-                        origin: getCookie('driverAddress'),
-                        destination: getCookie('clientAddress'),
-                        travelMode: 'DRIVING'
-                    }, function (response, status) {
-                        if (status === 'OK') {
-                            directionsDisplay.setDirections(response);
-                        } else {
-                            window.alert('Directions request failed due to ' + status);
-                        }
-                    });
-                }
-            })
-            .catch(function (err) {
-                alert('Tao chuyen di that bai');
-            })
+                    }
+                })
+                .catch(function (err) {
+                    getAccessToken(acceptTrip)
+                })
+        }
     });
-
     // Sự kiện nhấn button Cancel
     $('.btn-reject').click(function (e) {
-        $('#modalYesNo').modal('hide')
-        var instance = axios.create({
-            baseURL: 'http://localhost:3000/driver',
-            timeout: 15000,
-        });
-        instance.post('/declineRequest',
-            {
-                driverId: getCookie('driverId'),
-                clientId: getCookie('clientId'),
-            }, {
-                headers: {
-                    'x-access-token': getCookie('accessToken')
-                }
-            })
-            .then(function (res) {
-                console.log(res);
-                alert('Tu cho chuyen di thanh cong')
-            })
-            // .then(function () {
-            //     findTrip();
-            // })
-            .catch(function (err) {
-                alert('ERROR');
-            })
+        checkBTN = true;
+        rejectTrip();
+        function rejectTrip() {
+            $('#modalYesNo').modal('hide')
+            var instance = axios.create({
+                baseURL: 'http://localhost:3000/driver',
+                timeout: 15000,
+            });
+            instance.post('/declineRequest',
+                {
+                    driverId: getCookie('driverId'),
+                    clientId: getCookie('clientId'),
+                }, {
+                    headers: {
+                        'x-access-token': getCookie('accessToken')
+                    }
+                })
+                .then(function (res) {
+                    console.log(res);
+                    console.log('Tu choi chuyen di');
+                    setTimeout(() => {
+                        findTrip();
+                    }, 10000);
+                    
+                })
+                .catch(function (err) {
+                    getAccessToken(rejectTrip);
+                })
+        }
     });
 
     $('.btn-start').click(function (e) {
-        var instance = axios.create({
-            baseURL: 'http://localhost:3000/driver',
-            timeout: 15000,
-        });
-        instance.post('/tripStarting',
-            {
-                tripId: getCookie('tripId')
-            }, {
-                headers: {
-                    'x-access-token': getCookie('accessToken')
-                }
-            })
-            .then(function (res) {
-                console.log(res);
-                if(res.status == 200){
-                    alert('Bat dau chuyen di');
-                    $('.btn-start').css('display','none');
-                    $('.btn-finish').css('display','block');
-                }
-            })
-            .catch(function (err) {
-                alert('ERROR');
-            })
+        startTrip();
+        function startTrip() {
+            var instance = axios.create({
+                baseURL: 'http://localhost:3000/driver',
+                timeout: 15000,
+            });
+            instance.post('/tripStarting',
+                {
+                    tripId: getCookie('tripId')
+                }, {
+                    headers: {
+                        'x-access-token': getCookie('accessToken')
+                    }
+                })
+                .then(function (res) {
+                    console.log(res);
+                    if (res.status == 200) {
+                        alert('Bat dau chuyen di');
+                        $('.btn-start').css('display', 'none');
+                        $('.btn-finish').css('display', 'block');
+                    }
+                })
+                .catch(function (err) {
+                    getAccessToken(startTrip);
+                })
+        }
     });
 
     $('.btn-finish').click(function (e) {
-        var instance = axios.create({
-            baseURL: 'http://localhost:3000/driver',
-            timeout: 15000,
-        });
-        instance.post('/tripFinishing',
-            {
-                tripId: getCookie('tripId')
-            }, {
-                headers: {
-                    'x-access-token': getCookie('accessToken')
-                }
-            })
-            .then(function (res) {
-                console.log(res);
-                if(res.status == 200){
-                    alert('Bat dau chuyen di');
-                 //   $('.btn-start').css('display','none');
-                    $('.btn-finish').css('display','none');
-                    $('.change-status').prop('checked', false);
-                }
-            })
-            .catch(function (err) {
-                alert('ERROR');
-            })
+        finishTrip();
+        function finishTrip() {
+            var instance = axios.create({
+                baseURL: 'http://localhost:3000/driver',
+                timeout: 15000,
+            });
+            instance.post('/tripFinishing',
+                {
+                    tripId: getCookie('tripId')
+                }, {
+                    headers: {
+                        'x-access-token': getCookie('accessToken')
+                    }
+                })
+                .then(function (res) {
+                    console.log(res);
+                    if (res.status == 200) {
+                        alert('Bat dau chuyen di');
+                        //   $('.btn-start').css('display','none');
+                        $('.btn-finish').css('display', 'none');
+                        $('.change-status').prop('checked', false);
+                    }
+                })
+                .catch(function (err) {
+                    getAccessToken(finishTrip);
+                })
+        }
     });
 
     // Function find trip
@@ -196,7 +263,7 @@ $(function () {
             timeout: 15000,
         });
 
-        instance.post('/toReady',
+        instance.post('/findTrip',
             {
                 driverId: getCookie('driverId'),
             }, {
@@ -215,12 +282,25 @@ $(function () {
                     setCookie('long', res.data.request.latlngAddress.lng, 10800);
                     $('.customer-name').html('  ' + getCookie('name'));
                     $('.customer-address').html('  ' + res.data.request.orderAddress);
-                    $('#modalYesNo').modal('show')
+                    $('#modalYesNo').modal('show');
                     progress(10, 10, $('#progressBar'));
                     setTimeout(function () {
+                        console.log(checkBTN)
+                        if(checkBTN == false){
+                            toStandby();
+                            $('.change-status').prop('checked', false);
+                        } else {
+                            checkBTN = false;
+                        }
                         $('#modalYesNo').modal('hide')
                     }, 10000);
                 }
+                if (res.status === 204) {
+                    findTrip()
+                }
+            })
+            .catch(err => {
+                getAccessToken(findTrip);
             })
     }
 })
@@ -348,37 +428,56 @@ $('.save').on("click", function () {
     console.log(currentMarkerLocation);
     console.log(currentLocationName);
     setCookie('driverAddress', currentLocationName);
+    UpdateCurrentLocation();
+    function UpdateCurrentLocation() {
+        var instance = axios.create({
+            baseURL: 'http://localhost:3000/driver',
+            timeout: 15000,
+        });
 
+        instance.post('/currentLocation',
+            {
+                driverId: getCookie('driverId'),
+                latlngAddress: currentMarkerLocation,
+                address: currentLocationName
+            }, {
+                headers: {
+                    'x-access-token': getCookie('accessToken')
+                }
+            })
+            .then(function (res) {
+                if (res.status === 204) {
+                    // Do something
+                    alert('Cập nhật thành công')
+                }
+                console.log(res);
+            }).catch(function (err) {
+                // console.log(err);
+                getAccessToken(UpdateCurrentLocation);
+            })
+    }
+});
+
+function getAccessToken(callback) {
     var instance = axios.create({
-        baseURL: 'http://localhost:3000/driver',
-        timeout: 15000,
+        baseURL: 'http://localhost:3000/driverLogin',
+        timeout: 15000
     });
 
-    instance.post('/currentLocation',
-        {
-            driverId: getCookie('driverId'),
-            latlngAddress: currentMarkerLocation,
-            address: currentLocationName
-        }, {
-            headers: {
-                'x-access-token': getCookie('accessToken')
-            }
-        })
-        .then(function (res) {
-            if (res.status === 204) {
-                // Do something
-                alert('Cập nhật thành công')
-            } else {
-                //Do somgthing
-                alert('Cập nhật thất bại')
-            }
-
+    instance.post('/getAccessTokenFromRefreshToken', {
+        refreshToken: getCookie('refreshToken')
+    })
+        .then(res => {
             console.log(res);
-        }).catch(function (err) {
-            console.log(err);
-            alert('Cập nhật thất bại')
+            if (res.status = 200) {
+                setCookie('accessToken', res.data.access_token, 10);
+                callback();
+            }
         })
-});
+        .catch(err => {
+            alert('TOKEN ERROR')
+        })
+}
 
 // Ham lấy dữ liệu từ trong cookie
 function getCookie(cname) {

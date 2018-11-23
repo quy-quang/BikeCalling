@@ -6,7 +6,7 @@
       "orderAddress": "227 Nguyen Van Cu, Ward 4, District 5, Ho Chi Minh City",
       "note": "",
       "iat": 1541822161,
-      "status": 2,
+      "status": 4,
       "newAddress": "227 Nguyen Van Cu, Ward 4, District 5, Ho Chi Minh City",
       "clientId": "pOr_jX58H",
       "latlngAddress": {
@@ -19,8 +19,8 @@
       "phoneNumber": "0123456789",
       "orderAddress": "11 Sư Vạn Hạnh, Phường 12, Quận 10, Hồ Chí Minh",
       "note": "Không có gì cả",
-      "iat": 1542859914,
-      "status": 2,
+      "iat": 1542968560,
+      "status": 4,
       "newAddress": "11 Sư Vạn Hạnh, Phường 12, Quận 10, Hồ Chí Minh",
       "clientId": "zCzfXVo1a",
       "latlngAddress": {
@@ -33,8 +33,8 @@
       "phoneNumber": "0123456789",
       "orderAddress": "126 Hùng Vương Quận 5 Tp. Hồ Chí Minh",
       "note": "ABCXYZ",
-      "iat": 1542859964,
-      "status": 2,
+      "iat": 1542968599,
+      "status": 4,
       "newAddress": "126 Hùng Vương Quận 5 Tp. Hồ Chí Minh",
       "clientId": "5KxcezjnB",
       "latlngAddress": {
@@ -48,7 +48,7 @@
       "orderAddress": "216 Võ Văn Ngân, Bình Thọ, Thủ Đức, Hồ Chí Minh",
       "note": "ABCXYZ",
       "iat": 1542860005,
-      "status": 2,
+      "status": 1,
       "newAddress": "216 Võ Văn Ngân, Bình Thọ, Thủ Đức, Hồ Chí Minh",
       "clientId": "ldzTTCT7R",
       "latlngAddress": {
