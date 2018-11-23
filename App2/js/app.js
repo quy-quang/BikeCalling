@@ -36,7 +36,21 @@ var loadCategories = function () {
                 ts = res.data.return_ts;
                 var source = document.getElementById('template').innerHTML;
                 var template = Handlebars.compile(source);
-                var html = template(res.data.client);
+                var currentData = res.data.client;
+                for (var i = 0; i < currentData.length; i++) {
+                    if (currentData[i].status == 0 || currentData[i].status == 1) {
+                        currentData[i].isTrip = false;
+                    } else {
+                        currentData[i].isTrip = true;
+                    }
+                    if (currentData[i].status == 0) currentData[i].status = "Đang định vị";
+                    if (currentData[i].status == 1) currentData[i].status = "Đã định vị";
+                    if (currentData[i].status == 2) currentData[i].status = "Đã sẵn sàng";
+                    if (currentData[i].status == 3) currentData[i].status = "Đang chạy";
+                    if (currentData[i].status == 4) currentData[i].status = "Hoàn thành";
+                }
+                console.log(currentData);
+                var html = template(res.data.client.reverse());
                 document.getElementById('list').innerHTML =
                     '<thead class="thead-light">' +
                     '<tr>' +
@@ -44,6 +58,7 @@ var loadCategories = function () {
                     '<th scope="col">Tên Khách Hàng</th>' +
                     '<th scope="col">Địa chỉ</th>' +
                     '<th scope="col">Số điện thoại</th>' +
+                    '<th scope="col">Trạng thái</th>' +
                     '<th scope="col">Note</th>' +
                     '<th scope="col">Thao tác</th>' +
                     '</tr>' +
@@ -53,9 +68,9 @@ var loadCategories = function () {
         }).catch(function (err) {
             console.log(err);
         })
-    .then(function () {
-        loadCategories();
-    })
+        .then(function () {
+            loadCategories();
+        })
 }
 
 

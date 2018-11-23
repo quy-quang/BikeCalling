@@ -244,7 +244,7 @@ $(function () {
                 .then(function (res) {
                     console.log(res);
                     if (res.status == 200) {
-                        alert('Bat dau chuyen di');
+                        alert('Ket thuc chuyen di');
                         //   $('.btn-start').css('display','none');
                         $('.btn-finish').css('display', 'none');
                         $('.change-status').prop('checked', false);

@@ -24,6 +24,7 @@
                 <td>{{name}}</td>
                 <td>{{orderAddress}}</td>
                 <td>{{phoneNumber}}</td>
+                <td>{{status}}</td>
                 <td>{{note}}</td>
                 <td>
                     <button type="button" class="btn btn-info btnDetail" data-toggle="modal" data-target="#myModal" orderAddress="{{orderAddress}}" clientId ="{{clientId}}">
@@ -34,7 +35,7 @@
         {{/each}}
     </script>
     <div class="container-fluid">
-        <h1 style="text-align: center;">Danh Sách Các Yêu Cầu Của Khách Hàng</h1>
+        <h1 style="text-align: center;">Danh Sách Các Yêu Cầu Và Định Vị</h1>
         <table class="table" id="list">
             <thead class="thead-light">
                 <tr>
@@ -42,6 +43,7 @@
                     <th scope="col">Tên Khách Hàng</th>
                     <th scope="col">Địa chỉ</th>
                     <th scope="col">Số điện thoại</th>
+                    <th scope="col">Trạng thái</th>
                     <th scope="col">Note</th>
                     <th scope="col">Thao tác</th>
                 </tr>
