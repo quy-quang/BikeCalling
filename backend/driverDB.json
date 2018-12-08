@@ -6,10 +6,10 @@
       "name": "Cao Bá Đông",
       "status": 1,
       "driverId": "2l2hEiNNY",
-      "address": "145 Bình Thới, Phường 11, Quận 11, Hồ Chí Minh, Vietnam",
+      "address": "173 Bình Thới, Phường 9, Quận 11, Hồ Chí Minh, Vietnam",
       "latlngAddress": {
-        "lat": 10.766049369494004,
-        "lng": 106.64750517240799
+        "lat": 10.7653654,
+        "lng": 106.64644369999999
       }
     },
     {
@@ -18,10 +18,34 @@
       "password": "202cb962ac59075b964b07152d234b70",
       "status": 1,
       "driverId": "7vxcHci86",
-      "address": "135 Bình Thới, Phường 11, Quận 11, Hồ Chí Minh, Việt Nam",
+      "address": "4 Ông Ích Khiêm, Phường 14, Quận 11, Hồ Chí Minh, Việt Nam",
       "latlngAddress": {
-        "lat": 10.7660434,
-        "lng": 106.6476536
+        "lat": 10.765445260099625,
+        "lng": 106.64648145767205
+      }
+    },
+    {
+      "username": "vrdong1",
+      "password": "202cb962ac59075b964b07152d234b70",
+      "name": "Cao Bá Đông 1",
+      "status": 1,
+      "driverId": "2l2hEiNNY123",
+      "address": "171 Bình Thới, Phường 11, Quận 11, Hồ Chí Minh, Vietnam",
+      "latlngAddress": {
+        "lat": 10.765362300000003,
+        "lng": 106.64679676508172
+      }
+    },
+    {
+      "username": "vrdong2",
+      "password": "202cb962ac59075b964b07152d234b70",
+      "name": "Cao Bá Đông 2",
+      "status": 1,
+      "driverId": "2l2hEiNNY456",
+      "address": "3 Ông Ích Khiêm, Phường 10, Quận 11, Hồ Chí Minh, Vietnam",
+      "latlngAddress": {
+        "lat": 10.76539207646289,
+        "lng": 106.64605408272905
       }
     }
   ]

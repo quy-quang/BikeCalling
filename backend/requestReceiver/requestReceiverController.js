@@ -15,6 +15,7 @@ var clientDB = low(adapter);
 var router = express.Router();
 
 router.post('/', (req, res) => {
+	var clientDB = low(adapter);
 	var client = req.body;
 	var time_request = moment().unix();
 
